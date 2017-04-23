@@ -6,9 +6,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Sema;
-using Sema.Supplier;
-using Sema.ControlUtils;
+using System.IO;
+using neolibs;
+using neolibs.Supplier;
+using neolibs.ControlUtils;
 
 using MySql.Data;
 using MySql.Data.MySqlClient;
@@ -210,8 +211,16 @@ namespace WindowsFormsApplication1
             }
             catch(Exception ex)
             {
-                ErrorCount++;
-                throw ex;
+                if (PartsToIgnoreList.Contains(part))
+                {
+                    WriteStatus("Purchase info for " + part + " ignored");
+                    throw ex;
+                }
+                else
+                {
+                    ErrorCount++;
+                    throw ex;
+                }
             }
         }
 
@@ -367,7 +376,8 @@ namespace WindowsFormsApplication1
                         ppd.digikey_pn = ppd.digikey_pn.Trim();
                     }
 
-                    dkt.LoadPageData(ppd.digikey_pn);
+                    //dkt.LoadPageData(webBrowser1,ppd.digikey_pn);
+                    dkt.LoadPageData(geckoWebBrowser1,ppd.digikey_pn);
                     dk_prices = dkt.GetPricingInfo();
 
                     WriteStatus("Digikey Prices:");
@@ -658,8 +668,15 @@ namespace WindowsFormsApplication1
             }
             catch(Exception ex)
             {
-                ErrorCount++;
-                WriteStatus("ERROR: Cannot get purchase info for " + unique_id + " - " + ex.ToString());
+                if (PartsToIgnoreList.Contains(unique_id))
+                {
+                    WriteStatus("Purchase pricing info for "+unique_id+" ignored");
+                }
+                else
+                {
+                    ErrorCount++;
+                    WriteStatus("ERROR: Cannot get purchase info for " + unique_id + " - " + ex.ToString());
+                }
             }                        
 
         }
@@ -722,14 +739,18 @@ namespace WindowsFormsApplication1
         /// <param name="e">EventArgs</param>
         private void btnRun_Click(object sender, EventArgs e)
         {
+            txtStatus.Text = "";
+
+            // WriteStatus("Internet explorer version" + webBrowser1.Version);
+
             ErrorCount = 0;
             PartsToIgnoreList = txtIgnoreParts.Text.Split(new char[] {','});
             for(int i=0; i<PartsToIgnoreList.Count(); i++)
             {
                 PartsToIgnoreList[i] = PartsToIgnoreList[i].Trim();
+                WriteStatus("Ignore part (" + i.ToString() + ") " + PartsToIgnoreList[i]);
             }
 
-            txtStatus.Text = "";
             Application.DoEvents();
             try
             {
@@ -785,17 +806,17 @@ namespace WindowsFormsApplication1
 
                 try
                 {
-                    Sema.Currency.AddExhangeRate("USD","ZAR");
-                    Sema.Currency.AddExhangeRate("EUR","ZAR");
-                    double test1 = Sema.Currency.Convert("USD","ZAR",1.0);
-                    double test2 = Sema.Currency.Convert("EUR","ZAR",1.0);
+                    neolibs.Currency.AddExhangeRate("USD","ZAR");
+                    neolibs.Currency.AddExhangeRate("EUR","ZAR");
+                    double test1 = neolibs.Currency.Convert("USD","ZAR",1.0);
+                    double test2 = neolibs.Currency.Convert("EUR","ZAR",1.0);
 
                     WriteStatus("1 USD to ZAR = "+test1.ToString("#0.0000"));
                     WriteStatus("1 EUR to ZAR = "+test2.ToString("#0.0000"));
 
                     string connStr;
                     
-                    if (Sema.General.Commandline.FindParam("--localhostmysql") != 0)
+                    if (neolibs.General.Commandline.FindParam("--localhostmysql") != 0)
                     {
                         // command line option to use localhost mysql
                         connStr = "server=localhost;user=root;database=neosystems;port=3306;";
@@ -803,7 +824,7 @@ namespace WindowsFormsApplication1
                     else
                     {
                         // use the neosystems mysql server
-                        connStr = "server=10.0.0.6;user=armand;password=godcomplex;database=neosystems;port=3306;";
+                        connStr = "server=10.0.0.5;user=armand;password=godcomplex;database=neosystems;port=3306;";
                     }
                     conn = new MySqlConnection(connStr);
                     conn.Open();
@@ -925,9 +946,12 @@ namespace WindowsFormsApplication1
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            AppSettings.WorkingFolder = Sema.FileUtils.General.GetUserPath();
+            AppSettings.WorkingFolder = neolibs.FileUtils.General.GetUserPath();
             LoadSettings();
             LoadLists();
+
+            //geckoWebBrowser1.Navigate("http://www.wikipedia.org");
+            geckoWebBrowser1.Navigate(@"http://www.digikey.com/scripts/DkSearch/dksus.dll?Detail&name=497-14045-ND");            
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -994,9 +1018,9 @@ namespace WindowsFormsApplication1
 
         void LoadSettings()
         {
-            if (Sema.General.Commandline.FindParamExact("/noload") == 0)
+            if (neolibs.General.Commandline.FindParamExact("/noload") == 0)
 	        {
-		        Sema.FileUtils.Xml<TAppSettings>.LoadFromXml(ref AppSettings,String.Concat( Application.UserAppDataPath, @"\settings.xml" ));
+		        neolibs.FileUtils.Xml<TAppSettings>.LoadFromXml(ref AppSettings,String.Concat( Application.UserAppDataPath, @"\settings.xml" ));
 		        EffectSettings();
 	        }
         }
@@ -1009,14 +1033,14 @@ namespace WindowsFormsApplication1
 	        }
 	        catch(Exception e)
 	        {
-		        Sema.General.Error.Show("Unable to effect settings",e);
+		        neolibs.General.Error.Show("Unable to effect settings",e);
 	        }
         }
 
 
         void SaveSettings()
         {
-	        Sema.FileUtils.Xml<TAppSettings>.SaveToXml(AppSettings,String.Concat( Application.UserAppDataPath, @"\settings.xml" ));
+	        neolibs.FileUtils.Xml<TAppSettings>.SaveToXml(AppSettings,String.Concat( Application.UserAppDataPath, @"\settings.xml" ));
 	        EffectSettings();
         }
 

@@ -1,0 +1,3 @@
+[submodule "neodotnetlibs"]
+	path = neodotnetlibs
+	url = https://github.com/armandjordaan/neodotnetlibs

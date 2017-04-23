@@ -1,9 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoBOMCosting", "AutoBOMCosting\AutoBOMCosting.csproj", "{779E15D1-FED8-4921-A61D-D56FB01C660F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Semalibs", "..\..\..\libs\dotNET\Semalibs\Semalibs\Semalibs.csproj", "{5D7A8141-39C7-4994-80B7-E08A18821BAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "neolibs", "..\neodotnetlibs\neolibs\neolibs.csproj", "{5D7A8141-39C7-4994-80B7-E08A18821BAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
