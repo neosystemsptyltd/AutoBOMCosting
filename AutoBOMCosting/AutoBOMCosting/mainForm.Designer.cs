@@ -58,8 +58,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.workingfolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.geckoWebBrowser1 = new Gecko.GeckoWebBrowser();
+            this.workingfolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -146,6 +146,7 @@
             // 
             // btnEdit
             // 
+            this.btnEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEdit.Location = new System.Drawing.Point(741, 19);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(75, 23);
@@ -156,6 +157,8 @@
             // 
             // lvBOMList
             // 
+            this.lvBOMList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvBOMList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
@@ -306,6 +309,7 @@
             // 
             // btnSelectFolder
             // 
+            this.btnSelectFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSelectFolder.Location = new System.Drawing.Point(747, 15);
             this.btnSelectFolder.Name = "btnSelectFolder";
             this.btnSelectFolder.Size = new System.Drawing.Size(75, 23);
@@ -316,10 +320,13 @@
             // 
             // tbCurrentWorkingFolder
             // 
+            this.tbCurrentWorkingFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbCurrentWorkingFolder.Location = new System.Drawing.Point(97, 17);
             this.tbCurrentWorkingFolder.Name = "tbCurrentWorkingFolder";
             this.tbCurrentWorkingFolder.Size = new System.Drawing.Size(638, 20);
             this.tbCurrentWorkingFolder.TabIndex = 9;
+            this.tbCurrentWorkingFolder.TextChanged += new System.EventHandler(this.tbCurrentWorkingFolder_TextChanged);
             // 
             // label2
             // 

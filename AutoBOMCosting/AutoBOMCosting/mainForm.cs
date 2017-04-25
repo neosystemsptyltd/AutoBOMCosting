@@ -1044,5 +1044,10 @@ namespace WindowsFormsApplication1
 	        EffectSettings();
         }
 
+        private void tbCurrentWorkingFolder_TextChanged(object sender, EventArgs e)
+        {
+            AppSettings.WorkingFolder = tbCurrentWorkingFolder.Text;
+            neolibs.FileUtils.Xml<TAppSettings>.SaveToXml(AppSettings, String.Concat(Application.UserAppDataPath, @"\settings.xml"));
+        }
     }
 }
